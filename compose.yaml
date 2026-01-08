@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:latest
-    container_name: postgres
+    container_name: booking-db
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password

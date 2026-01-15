@@ -1,7 +1,9 @@
 package com.yehorsk.bookingsystem.auth
 
 import com.yehorsk.bookingsystem.auth.service.AuthService
+import com.yehorsk.bookingsystem.auth.service.dto.requests.LoginUserDto
 import com.yehorsk.bookingsystem.auth.service.dto.requests.RegisterUserDto
+import com.yehorsk.bookingsystem.auth.service.dto.responses.LoginResponseDto
 import com.yehorsk.bookingsystem.auth.service.dto.responses.UserResponseDto
 import com.yehorsk.bookingsystem.auth.utils.JwtUtil
 import jakarta.validation.Valid
@@ -20,6 +22,11 @@ class AuthController(
     @PostMapping("/register")
     fun register(@Valid @RequestBody request: RegisterUserDto): UserResponseDto {
         return authService.register(request)
+    }
+
+    @PostMapping("/login")
+    fun login(@Valid @RequestBody request: LoginUserDto): LoginResponseDto {
+        return authService.login(request)
     }
 
 }

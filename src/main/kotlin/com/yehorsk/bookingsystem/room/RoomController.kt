@@ -5,6 +5,7 @@ import com.yehorsk.bookingsystem.room.service.dto.request.CreateRoomRequestDto
 import com.yehorsk.bookingsystem.room.service.dto.request.UpdateRoomRequestDto
 import com.yehorsk.bookingsystem.room.service.dto.response.RoomResponseDto
 import jakarta.validation.Valid
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,22 +22,22 @@ class RoomController(
 ) {
 
     @GetMapping("/{id}")
-    suspend fun getById(@PathVariable id: Long): RoomResponseDto {
+    fun getById(@PathVariable id: Long): RoomResponseDto {
         return roomService.get(id)
     }
 
-    @PostMapping
-    suspend fun create(request: CreateRoomRequestDto): RoomResponseDto{
+    @PostMapping("/")
+    fun create(@Valid @RequestBody request: CreateRoomRequestDto): RoomResponseDto{
         return roomService.create(request)
     }
 
     @PutMapping("/{id}")
-    suspend fun update(@Valid @RequestBody request: UpdateRoomRequestDto, @PathVariable id: Long): RoomResponseDto{
+    fun update(@Valid @RequestBody request: UpdateRoomRequestDto, @PathVariable id: Long): RoomResponseDto{
         return roomService.update(request, id)
     }
 
     @DeleteMapping("/{id}")
-    suspend fun delete(@PathVariable id: Long){
+    fun delete(@PathVariable id: Long){
         roomService.delete(id)
     }
 

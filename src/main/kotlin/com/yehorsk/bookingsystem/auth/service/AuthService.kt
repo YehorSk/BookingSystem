@@ -1,9 +1,11 @@
 package com.yehorsk.bookingsystem.auth.service
 
+import com.yehorsk.bookingsystem.auth.database.entity.RefreshTokenEntity
 import com.yehorsk.bookingsystem.auth.exceptions.types.EmailIsTakenException
 import com.yehorsk.bookingsystem.auth.mappers.toUserResponseDto
 import com.yehorsk.bookingsystem.auth.database.repository.UserRepository
 import com.yehorsk.bookingsystem.auth.database.entity.UserEntity
+import com.yehorsk.bookingsystem.auth.database.repository.RefreshTokenRepository
 import com.yehorsk.bookingsystem.auth.exceptions.types.InvalidCredentialsException
 import com.yehorsk.bookingsystem.auth.exceptions.types.UserDoesNotExistException
 import com.yehorsk.bookingsystem.auth.service.dto.requests.LoginUserDto
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service
 class AuthService(
     private val jwtUtil: JwtUtil,
     private val userRepository: UserRepository,
+    private val refreshTokenRepository: RefreshTokenRepository,
     private val passwordEncoder: PasswordEncoder
 ) {
 
@@ -35,9 +38,8 @@ class AuthService(
             ?: throw UserDoesNotExistException()
 
         if(!passwordEncoder.matches(request.password, user.password)) throw InvalidCredentialsException()
-        val jwt = jwtUtil.generateToken(user.id.toString())
-        return LoginResponseDto(user.toUserResponseDto(), jwt)
-
+        val tokens = jwtUtil.generateTokens(user.id.toString(), user.role.toString())
+        return LoginResponseDto(user.toUserResponseDto(), tokens)
     }
 
 }

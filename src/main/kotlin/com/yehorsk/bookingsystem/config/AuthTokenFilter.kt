@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
@@ -23,7 +24,8 @@ class AuthTokenFilter(
         if(authHeader != null && authHeader.startsWith("Bearer ")) {
             if(jwtUtil.validateAccessToken(authHeader)) {
                 val userId = jwtUtil.extractUserId(authHeader)
-                val auth = UsernamePasswordAuthenticationToken(userId, null)
+                val role = jwtUtil.extractRole(authHeader)
+                val auth = UsernamePasswordAuthenticationToken(userId, null, listOf(SimpleGrantedAuthority("ROLE_$role")))
                 SecurityContextHolder.getContext().authentication = auth
             }
         }

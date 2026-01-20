@@ -21,11 +21,11 @@ class UserEntity(
     var id: Long? = null,
     @Email
     @Column(nullable = false, unique = true)
-    var email: String = "",
+    var email: String,
     @Column(nullable = false)
-    var name: String = "",
+    var name: String,
     @Column(nullable = false)
-    var password: String = "",
+    var password: String,
     @Column(nullable = false)
     var enabled: Boolean = true,
     @Enumerated(EnumType.STRING)

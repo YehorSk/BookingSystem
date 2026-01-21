@@ -28,6 +28,7 @@ class RoomController(
 
     @PostMapping("/")
     fun create(@Valid @RequestBody request: CreateRoomRequestDto): RoomResponseDto{
+        println("Request $request")
         return roomService.create(request)
     }
 

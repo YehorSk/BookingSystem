@@ -8,11 +8,13 @@ fun RoomEntity.toRoomResponseDto() = RoomResponseDto(
     id = id ?: 0,
     number = number,
     capacity = capacity,
-    isActive = isActive
+    isActive = isActive,
+    price = price
 )
 
 fun CreateRoomRequestDto.toEntity() = RoomEntity(
     number = number,
     capacity = capacity,
-    isActive = isActive
+    isActive = isActive,
+    price = price
 )

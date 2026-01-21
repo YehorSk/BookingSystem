@@ -8,6 +8,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import java.math.BigDecimal
 import java.time.Instant
 
 @Entity
@@ -22,6 +23,8 @@ class RoomEntity(
     var capacity: Int = 1,
     @Column(name = "is_active")
     var isActive: Boolean = true,
+    @Column(nullable = false, precision = 10, scale = 2)
+    var price: BigDecimal,
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     var createdAt: Instant = Instant.now(),

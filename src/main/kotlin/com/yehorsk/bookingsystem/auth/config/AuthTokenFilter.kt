@@ -1,4 +1,4 @@
-package com.yehorsk.bookingsystem.config
+package com.yehorsk.bookingsystem.auth.config
 
 import com.yehorsk.bookingsystem.auth.utils.JwtUtil
 import jakarta.servlet.FilterChain

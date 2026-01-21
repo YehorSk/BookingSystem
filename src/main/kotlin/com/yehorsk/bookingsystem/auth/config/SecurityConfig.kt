@@ -1,4 +1,4 @@
-package com.yehorsk.bookingsystem.config
+package com.yehorsk.bookingsystem.auth.config
 
 import jakarta.servlet.DispatcherType
 import org.springframework.context.annotation.Bean
@@ -14,7 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 class SecurityConfig(
-    private val authTokenFilter: AuthTokenFilter
+    private val authTokenFilter: AuthTokenFilter,
+    private val helloWorldFilter: HelloWorldFilter
 ) {
 
     @Bean
@@ -43,6 +44,7 @@ class SecurityConfig(
                     .authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
             }
             .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(helloWorldFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
     }
 

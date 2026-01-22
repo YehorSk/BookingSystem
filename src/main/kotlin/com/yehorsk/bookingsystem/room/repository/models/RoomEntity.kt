@@ -1,10 +1,14 @@
 package com.yehorsk.bookingsystem.room.repository.models
 
+import com.yehorsk.bookingsystem.booking.repository.models.BookingEntity
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -18,17 +22,23 @@ class RoomEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     @Column(nullable = false, unique = true)
-    var number: String = "",
+    var number: String,
     @Column(nullable = false)
     var capacity: Int = 1,
     @Column(name = "is_active")
     var isActive: Boolean = true,
     @Column(nullable = false, precision = 10, scale = 2)
     var price: BigDecimal,
+    @OneToMany(
+        mappedBy = "room",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY
+    )
+    var bookings: MutableSet<BookingEntity> = mutableSetOf(),
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    var createdAt: Instant = Instant.now(),
+    var createdAt: Instant? = null,
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
-    var updatedAt: Instant = Instant.now()
+    var updatedAt: Instant? = null
 )

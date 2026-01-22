@@ -1,5 +1,6 @@
 package com.yehorsk.bookingsystem.room
 
+import com.yehorsk.bookingsystem.common.type.RoomId
 import com.yehorsk.bookingsystem.room.service.RoomService
 import com.yehorsk.bookingsystem.room.service.dto.request.CreateRoomRequestDto
 import com.yehorsk.bookingsystem.room.service.dto.request.UpdateRoomRequestDto
@@ -22,23 +23,22 @@ class RoomController(
 ) {
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: Long): RoomResponseDto {
+    fun getById(@PathVariable id: RoomId): RoomResponseDto {
         return roomService.get(id)
     }
 
     @PostMapping("/")
     fun create(@Valid @RequestBody request: CreateRoomRequestDto): RoomResponseDto{
-        println("Request $request")
         return roomService.create(request)
     }
 
     @PutMapping("/{id}")
-    fun update(@Valid @RequestBody request: UpdateRoomRequestDto, @PathVariable id: Long): RoomResponseDto{
+    fun update(@Valid @RequestBody request: UpdateRoomRequestDto, @PathVariable id: RoomId): RoomResponseDto{
         return roomService.update(request, id)
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long){
+    fun delete(@PathVariable id: RoomId){
         roomService.delete(id)
     }
 

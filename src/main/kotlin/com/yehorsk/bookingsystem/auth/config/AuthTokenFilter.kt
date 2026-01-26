@@ -1,5 +1,6 @@
 package com.yehorsk.bookingsystem.auth.config
 
+import com.yehorsk.bookingsystem.auth.service.UserDetailsServiceImpl
 import com.yehorsk.bookingsystem.auth.utils.JwtUtil
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -12,7 +13,8 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class AuthTokenFilter(
-    private val jwtUtil: JwtUtil
+    private val jwtUtil: JwtUtil,
+    private val userDetailsService: UserDetailsServiceImpl
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -24,8 +26,8 @@ class AuthTokenFilter(
         if(authHeader != null && authHeader.startsWith("Bearer ")) {
             if(jwtUtil.validateAccessToken(authHeader)) {
                 val userId = jwtUtil.extractUserId(authHeader)
-                val role = jwtUtil.extractRole(authHeader)
-                val auth = UsernamePasswordAuthenticationToken(userId, null, listOf(SimpleGrantedAuthority("ROLE_$role")))
+                val user = userDetailsService.loadUserByUsername(userId)
+                val auth = UsernamePasswordAuthenticationToken(user, null, user.authorities)
                 SecurityContextHolder.getContext().authentication = auth
             }
         }

@@ -1,7 +1,7 @@
 package com.yehorsk.bookingsystem.room.service
 
 import com.yehorsk.bookingsystem.common.type.RoomId
-import com.yehorsk.bookingsystem.exceptions.DuplicateResourceException
+import com.yehorsk.bookingsystem.common.exceptions.DuplicateResourceException
 import com.yehorsk.bookingsystem.room.exceptions.RoomNotFoundException
 import com.yehorsk.bookingsystem.room.mappers.toEntity
 import com.yehorsk.bookingsystem.room.mappers.toRoomResponseDto

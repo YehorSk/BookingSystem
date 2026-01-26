@@ -1,4 +1,4 @@
-package com.yehorsk.bookingsystem.exceptions
+package com.yehorsk.bookingsystem.common.exceptions
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus

@@ -7,5 +7,5 @@ fun UserEntity.toUserResponseDto() = UserResponseDto(
     id = id!!,
     email = email,
     name = name,
-    role = role
+    role = role,
 )

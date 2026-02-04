@@ -6,7 +6,5 @@ import org.springframework.web.bind.annotation.ResponseStatus
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 class RoomNotFoundException(
-    id: Long
-): RuntimeException(
-    "Room not found"
-)
+    val id: Long
+): RuntimeException()

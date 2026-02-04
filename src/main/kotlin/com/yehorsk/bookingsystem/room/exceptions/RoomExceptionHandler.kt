@@ -14,7 +14,7 @@ class RoomExceptionHandler {
     fun handleNoSuchElement(e: RoomNotFoundException): ResponseEntity<String>{
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(e.message ?: "Room not found")
+            .body(e.message ?: "Room with number ${e.id} not found")
     }
 
 }

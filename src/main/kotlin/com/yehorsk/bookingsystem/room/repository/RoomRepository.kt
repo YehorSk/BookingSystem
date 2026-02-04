@@ -9,4 +9,6 @@ interface RoomRepository: JpaRepository<RoomEntity, Long> {
 
     fun existsByNumberAndIdNot(number: String, id: Long): Boolean
 
+    fun findRoomEntityById(id: Long): RoomEntity?
+
 }

@@ -3,9 +3,11 @@ package com.yehorsk.bookingsystem.booking
 import com.yehorsk.bookingsystem.auth.service.CustomUserDetails
 import com.yehorsk.bookingsystem.booking.service.BookingService
 import com.yehorsk.bookingsystem.booking.service.dtos.requests.CreateBookingRequestDto
+import com.yehorsk.bookingsystem.booking.service.dtos.requests.GetBookingsRequestDto
 import com.yehorsk.bookingsystem.booking.service.dtos.responses.BookingResponseDto
 import com.yehorsk.bookingsystem.common.type.BookingId
 import jakarta.validation.Valid
+import org.springframework.data.domain.Page
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -21,6 +23,11 @@ import org.springframework.web.bind.annotation.RestController
 class BookingController(
     private val bookingService: BookingService
 ) {
+
+    @PostMapping("/index")
+    fun getAllBookings(@RequestBody request: GetBookingsRequestDto, @RequestParam page: Int, @RequestParam size: Int): Page<BookingResponseDto>{
+        return bookingService.getAllBookings(request, page, size)
+    }
 
     @PostMapping("/")
     fun createBooking(@Valid @RequestBody request: CreateBookingRequestDto, @AuthenticationPrincipal principal: CustomUserDetails): BookingResponseDto {

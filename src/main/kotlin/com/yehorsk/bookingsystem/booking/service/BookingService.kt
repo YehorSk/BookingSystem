@@ -1,11 +1,13 @@
 package com.yehorsk.bookingsystem.booking.service
 
+import com.yehorsk.bookingsystem.auth.database.entity.UserRole
 import com.yehorsk.bookingsystem.auth.service.CustomUserDetails
 import com.yehorsk.bookingsystem.booking.exceptions.types.BookingDoesNotExistException
 import com.yehorsk.bookingsystem.booking.exceptions.types.RoomNotAvailableException
 import com.yehorsk.bookingsystem.booking.mappers.toBookingEntity
 import com.yehorsk.bookingsystem.booking.mappers.toBookingResponseDto
 import com.yehorsk.bookingsystem.booking.repository.BookingRepository
+import com.yehorsk.bookingsystem.booking.repository.BookingSpecifications
 import com.yehorsk.bookingsystem.booking.repository.models.BookingStatus
 import com.yehorsk.bookingsystem.booking.security.BookingSecurity
 import com.yehorsk.bookingsystem.booking.service.dtos.requests.CreateBookingRequestDto
@@ -15,6 +17,9 @@ import com.yehorsk.bookingsystem.common.type.BookingId
 import com.yehorsk.bookingsystem.common.type.UserId
 import com.yehorsk.bookingsystem.room.exceptions.RoomNotFoundException
 import com.yehorsk.bookingsystem.room.repository.RoomRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -43,12 +48,22 @@ import java.awt.print.Book
 class BookingService(
     private val bookingRepository: BookingRepository,
     private val roomRepository: RoomRepository,
-    private val bookingSecurity: BookingSecurity
+    private val bookingSecurity: BookingSecurity,
+    private val bookingSpecifications: BookingSpecifications
 ) {
 
-//    fun getBookings(request: GetBookingsRequestDto): List<BookingResponseDto> {
-//
-//    }
+    @PreAuthorize("isAuthenticated()")
+    fun getAllBookings(requestDto: GetBookingsRequestDto, page: Int, size: Int): Page<BookingResponseDto> {
+        val principal = SecurityContextHolder.getContext().authentication?.principal as? CustomUserDetails
+        val specs = if(principal!!.user.role == UserRole.ADMIN){
+            bookingSpecifications.buildDynamicSpecification(requestDto)
+        }else{
+            val request = requestDto.copy(userId = principal.id)
+            bookingSpecifications.buildDynamicSpecification(request)
+        }
+        val pageable = PageRequest.of(page, size)
+        return bookingRepository.findAll(specs, pageable).map { it.toBookingResponseDto() }
+    }
 
     @PreAuthorize("@bookingSecurity.isOwner(#id) || hasRole('ADMIN')")
     fun getBookingById(id: BookingId): BookingResponseDto{

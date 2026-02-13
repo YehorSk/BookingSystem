@@ -5,13 +5,10 @@ import com.yehorsk.bookingsystem.booking.repository.models.BookingStatus
 import com.yehorsk.bookingsystem.booking.service.dtos.requests.GetBookingsRequestDto
 import com.yehorsk.bookingsystem.common.type.RoomId
 import com.yehorsk.bookingsystem.common.type.UserId
-import jakarta.persistence.criteria.Predicate
 import org.springframework.data.jpa.domain.Specification
-import org.springframework.stereotype.Component
 import java.time.Instant
 
-@Component
-class BookingSpecifications {
+object BookingSpecifications {
 
     fun hasRoomId(roomId: RoomId?): Specification<BookingEntity> {
         return Specification { root, _, criteriaBuilder  ->
@@ -46,7 +43,7 @@ class BookingSpecifications {
     }
 
     fun createdAfter(instant: Instant?): Specification<BookingEntity> {
-        return Specification { root, query, criteriaBuilder  ->
+        return Specification { root, _, criteriaBuilder  ->
             instant?.let {
                 criteriaBuilder.greaterThanOrEqualTo(root.get<Instant>("createdAt"), instant)
             }
@@ -54,7 +51,7 @@ class BookingSpecifications {
     }
 
     fun createdBefore(instant: Instant?): Specification<BookingEntity> {
-        return Specification { root, query, criteriaBuilder  ->
+        return Specification { root, _, criteriaBuilder  ->
             instant?.let {
                 criteriaBuilder.lessThanOrEqualTo(root.get<Instant>("createdAt"), instant)
             }

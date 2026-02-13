@@ -3,6 +3,7 @@ package com.yehorsk.bookingsystem.auth.exceptions
 import com.yehorsk.bookingsystem.auth.exceptions.types.EmailIsTakenException
 import com.yehorsk.bookingsystem.auth.exceptions.types.InvalidCredentialsException
 import com.yehorsk.bookingsystem.auth.exceptions.types.UserDoesNotExistException
+import com.yehorsk.bookingsystem.auth.exceptions.types.UserNotAuthenticatedException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -30,6 +31,13 @@ class AuthExceptionHandler {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(mapOf("error" to "User does not exist"))
+    }
+
+    @ExceptionHandler(UserNotAuthenticatedException::class)
+    fun userNotAuthenticated(e: UserNotAuthenticatedException): ResponseEntity<Map<String, String>> {
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(mapOf("error" to "User isn't authenticated."))
     }
 
 }

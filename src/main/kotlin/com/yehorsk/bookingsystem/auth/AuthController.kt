@@ -36,7 +36,7 @@ class AuthController(
     }
 
     @PostMapping("/login")
-    fun login(@Valid @RequestBody request: LoginUserDto): LoginResponseDto {
+    suspend fun login(@Valid @RequestBody request: LoginUserDto): LoginResponseDto {
         return authService.login(request)
     }
 

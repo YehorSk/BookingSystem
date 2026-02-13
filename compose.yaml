@@ -1,4 +1,18 @@
 services:
+  mailpit:
+    image: axllent/mailpit
+    environment:
+      - TZ=Europe/Bratislava
+    networks:
+      - booking_network
+    container_name: mailpit-booking
+    volumes:
+      - mailpit-booking-data:/data
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+
   postgres:
     image: postgres:latest
     container_name: booking-db
@@ -6,6 +20,8 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
       POSTGRES_DB: postgres
+    networks:
+      - booking_network
     ports:
       - "5432:5432"
     volumes:
@@ -13,3 +29,8 @@ services:
 
 volumes:
   postgres_data:
+  mailpit-booking-data:
+
+networks:
+  booking_network:
+    driver: bridge

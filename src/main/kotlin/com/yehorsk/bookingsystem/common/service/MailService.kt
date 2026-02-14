@@ -1,5 +1,9 @@
 package com.yehorsk.bookingsystem.common.service
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
@@ -14,6 +18,7 @@ class MailService(
 ) {
 
     fun sendPlainText(to: String, subject: String, body: String) {
+        println("Sending email to $to")
         val message = SimpleMailMessage()
         message.setTo(to)
         message.from = from

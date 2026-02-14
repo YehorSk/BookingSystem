@@ -38,7 +38,7 @@ class AuthService(
     fun login(request: LoginUserDto): LoginResponseDto {
         val user = userRepository.findByEmail(request.email)
             ?: throw UserDoesNotExistException()
-        mailService.sendPlainText("test@gmail.com", "Test subject", "Test body")
+//        mailService.sendPlainText("test@gmail.com", "Test subject", "Test body")
         if(!passwordEncoder.matches(request.password, user.password)) throw InvalidCredentialsException()
         val tokens = jwtUtil.generateTokens(user.id.toString(), user.role.toString())
         return LoginResponseDto(user.toUserResponseDto(), tokens)
